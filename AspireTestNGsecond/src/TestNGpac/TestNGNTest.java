@@ -16,20 +16,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.Reporter;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 
 public class TestNGNTest {
 	
 	public WebDriver driver;
-//  @Test
-//  public void f() {
-//	  System.setProperty("webdriver.chrome.driver", "E:\\SAspire\\chromedriver.exe");
-//      driver=new ChromeDriver();
-//     driver.get("https://www.google.com/");
-//     String expectedTitle="Google";
-//     String actualTitle=driver.getTitle();
-//     Assert.assertEquals(actualTitle, expectedTitle);
-//  }
+
 	
 	@Test(priority=0)
 	  public void launch() {
@@ -55,13 +48,37 @@ public class TestNGNTest {
 	else
 	{
 	File src=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-    File dest=new File("ss1.png");
+    File dest=new File("\ss1.png");
     FileUtils.copyFile(src,dest);
-    Reporter.log("ss1.png");
+    Reporter.log("\ss1.png");
     Assert.assertTrue(false,"title test was failed");
     
 	}
 	}
+	@Test(dependsOnMethods= {"validatetitle"})
+	public void login() throws Exception
+	{
+		driver.findElement(By.cssSelector("input[id=login]")).sendKeys("user@aspireapp.com");
+		driver.findElement(By.cssSelector("input[id=password]")).sendKeys("@sp1r3app");
+		driver.findElement(By.cssSelector("button.btn.btn-primary.btn-block")).click();
+		Thread.sleep(5000);
+		driver.findElement(By.xpath("//span[@class=\"oe_topbar_name\"]")).isDisplayed();
+		if(driver.findElement(By.xpath("//span[@class=\"oe_topbar_name\"]")).isDisplayed())
+		{
+			 System.out.println("element is displayed");
+		}
+		else
+		{
+			 System.out.println("element is not displayed");
+		File src=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+	    File dest=new File("\ss2.png");
+	    FileUtils.copyFile(src,dest);
+	    Reporter.log("\ss2.png");
+//	    Assert.assertTrue(false,"user test was failed");
+	    
+		}
+		}
+
 	
   @BeforeMethod
   public void beforeMethod() {
@@ -69,8 +86,15 @@ public class TestNGNTest {
 	  System.out.println("Starting the browser session");
   }
 
-  @AfterMethod
+  @AfterMethod 
   public void afterMethod() {
+
+	  System.out.println("method has been run");
+//      driver.quit();	  
+  }
+  
+  @AfterClass
+  public void afterClass() {
 
 	  System.out.println("Closing the browser session");
       driver.quit();	  
